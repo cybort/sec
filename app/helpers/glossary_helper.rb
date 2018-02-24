@@ -75,10 +75,18 @@ module GlossaryHelper
     Nokogiri::XML::Element.new("a", doc).tap do |link|
       link["href"] = glossary_path(term)
       link["class"] = "glossary-term"
+      link["data-tooltip"] = "true"
+      link["title"] = File.open(
+        Rails.root.join("app/views/glossary/_tooltip.html.erb")
+      ).read
+      link["aria-haspopup"] = "true"
+      link["data-disable-hover"] = "false"
+      link["data-allow-html"] = "true"
       link.content = content
 
       img = Nokogiri::XML::Element.new("img", doc)
       img["src"] = image_path("info.png")
+
       link.add_child(img)
     end
   end
